@@ -41,7 +41,7 @@ def _make_fake_browser():
     return fake_browser
 
 
-_shared_fake_browser = _make_fake_browser()
+_SHARED_FAKE_BROWSER = _make_fake_browser()
 _CACHE_DIR_PATH = 'cache/'
 
 
@@ -62,7 +62,7 @@ def read_or_request(url):
 
     # request
 
-    resp = _shared_fake_browser.get(url)
+    resp = _SHARED_FAKE_BROWSER.get(url)
     text = resp.text
 
     while 1:
