@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 
 
-from pprint import pprint
+from os import mkdir
+from urllib.parse import quote_plus
 import logging
-from bs4 import BeautifulSoup
+
 import requests
+from bs4 import BeautifulSoup
 
 
 logging.basicConfig(
@@ -18,7 +20,7 @@ logging.basicConfig(
 )
 
 
-def make_fake_browser():
+def _make_fake_browser():
 
     fake_browser = requests.Session()
     fake_browser.headers = {
@@ -39,17 +41,44 @@ def make_fake_browser():
     return fake_browser
 
 
-def save_index_html():
+_shared_fake_browser = _make_fake_browser()
 
-    fake_browser = make_fake_browser()
-    resp = fake_browser.get('https://www.ptt.cc/bbs/Gossiping/index.html')
 
-    with open('index.html', 'w') as f:
-        f.write(resp.text)
+def read_or_request(url):
 
-    logging.info('Saved index.html')
+    # should generate valid fname for most of the systems
+    fname = quote_plus(url)
+    path = 'cache/{}'.format(fname)
+
+    # try cache
+
+    try:
+        with open(path) as f:
+            logging.info('Hit {}'.format(url))
+            return f.read()
+    except OSError:
+        logging.info('Missed {}'.format(url))
+
+    # request
+
+    resp = _shared_fake_browser.get(url)
+    text = resp.text
+
+    while 1:
+
+        try:
+            with open(path, 'w') as f:
+                f.write(text)
+        except FileNotFoundError:
+            mkdir('cache')
+            continue
+        else:
+            logging.info('Wrote {}'.format(url))
+            break
+
+    return text
 
 
 if __name__ == '__main__':
 
-    save_index_html()
+    read_or_request('https://www.ptt.cc/bbs/Gossiping/index.html')
