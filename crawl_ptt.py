@@ -75,7 +75,9 @@ def read_or_request(url):
             continue
         else:
             logging.info('Wrote {}'.format(url))
-            break
+
+        # only loop once normally
+        break
 
     return text
 
