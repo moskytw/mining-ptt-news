@@ -42,13 +42,14 @@ def _make_fake_browser():
 
 
 _shared_fake_browser = _make_fake_browser()
+_CACHE_DIR_PATH = 'cache/'
 
 
 def read_or_request(url):
 
     # should generate valid fname for most of the systems
     fname = quote_plus(url)
-    path = 'cache/{}'.format(fname)
+    path = '{}{}'.format(_CACHE_DIR_PATH, fname)
 
     # try cache
 
@@ -70,7 +71,7 @@ def read_or_request(url):
             with open(path, 'w') as f:
                 f.write(text)
         except FileNotFoundError:
-            mkdir('cache')
+            mkdir(_CACHE_DIR_PATH)
             continue
         else:
             logging.info('Wrote {}'.format(url))
