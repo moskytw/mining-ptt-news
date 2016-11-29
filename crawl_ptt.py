@@ -176,12 +176,16 @@ def parse_index_page(text):
         # 2. <div class="title"> (本文已被刪除) [gundam0613] </div>
         #
 
-        title_a_tag = ent_tag.find(class_='title').a
-        if not title_a_tag:
-            continue
-
-        title = title_a_tag.string
-        article_url = urljoin(_ROOT, title_a_tag.get('href', ''))
+        title_tag = ent_tag.find(class_='title')
+        title_a_tag = title_tag.a
+        if title_a_tag:
+            # case 1
+            title = title_a_tag.string
+            article_url = urljoin(_ROOT, title_a_tag.get('href', ''))
+        else:
+            # case 2: deleted article
+            title = title_tag.string.strip()
+            article_url = ''
 
         # others
 
@@ -190,6 +194,9 @@ def parse_index_page(text):
         # mmdd won't contain year!
         raw_mmdd = ent_meta_tag.find(class_='date').string
         author_id = ent_meta_tag.find(class_='author').string
+        # deleted article
+        if not article_url and author_id == '-':
+            author_id = ''
 
         # append
 
