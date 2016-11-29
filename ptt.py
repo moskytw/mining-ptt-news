@@ -17,11 +17,12 @@ logging.basicConfig(
     format=(
         '%(asctime)s\t%(levelname)s\t'
         #'%(processName)s\t%(threadName)s\t'
-        '%(name)s\t%(funcName)s:%(lineno)d\t'
+        '%(module)s\t%(funcName)s:%(lineno)d\t'
         '%(message)s'
     ),
     level=logging.DEBUG
 )
+l = logging.getLogger('ptt')
 
 
 def _make_fake_browser():
@@ -60,16 +61,16 @@ def read_or_request(url):
 
     if url in _URL_SET_SKIPPING_CACHE:
 
-        logging.info('Skip cache for {}'.format(url))
+        l.info('Skip cache for {}'.format(url))
 
     else:
 
         try:
             with open(path) as f:
-                logging.info('Hit {}'.format(url))
+                l.info('Hit {}'.format(url))
                 return f.read()
         except OSError:
-            logging.info('Missed {}'.format(url))
+            l.info('Missed {}'.format(url))
 
     # request
 
@@ -85,7 +86,7 @@ def read_or_request(url):
             mkdir(_CACHE_DIR_PATH)
             continue
         else:
-            logging.info('Wrote {}'.format(url))
+            l.info('Wrote {}'.format(url))
 
         # only loop once normally
         break
@@ -324,15 +325,15 @@ def crawl(index_url):
 
         # crawl and parse the index page
 
-        logging.info('Crawl the index page {} ...'.format(prev_url))
+        l.info('Crawl the index page {} ...'.format(prev_url))
         try:
             text = read_or_request(prev_url)
         except OSError:
             # try again
-            logging.info('Try again ...')
+            l.info('Try again ...')
             text = read_or_request(prev_url)
 
-        logging.info('Parse the index page {} ...'.format(prev_url))
+        l.info('Parse the index page {} ...'.format(prev_url))
         parsed_index_d = parse_index_page(text)
 
         prev_url = parsed_index_d['prev_url']
@@ -350,25 +351,25 @@ def crawl(index_url):
             if not entry_d['title'].startswith('[新聞]'):
                 continue
 
-            logging.info('Crawl the article page {} ...'.format(article_url))
+            l.info('Crawl the article page {} ...'.format(article_url))
             try:
                 read_or_request(article_url)
             except OSError:
                 # try again
-                logging.info('Try again ...')
+                l.info('Try again ...')
                 try:
                     read_or_request(article_url)
                 except OSError:
                     # skip if still fail
-                    logging.info('Skip')
+                    l.info('Skip')
                     continue
 
             count += 1
 
-            logging.info('Sleep')
+            l.info('Sleep')
             sleep(randint(0, 10)*0.001)
 
-        logging.info('Got {:,} articles so far'.format(count))
+        l.info('Got {:,} articles so far'.format(count))
 
 
 if __name__ == '__main__':
