@@ -179,9 +179,7 @@ def parse_index_page(text):
         ent_meta_tag = ent_tag.find(class_='meta')
 
         # mmdd won't contain year!
-        mmdd = '{:0>2}{:0>2}'.format(
-            *ent_meta_tag.find(class_='date').string.split('/')
-        )
+        mmdd = ent_meta_tag.find(class_='date').string
         author_id = ent_meta_tag.find(class_='author').string
 
         # append
