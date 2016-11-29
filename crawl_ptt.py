@@ -291,8 +291,10 @@ def parse_article_page(text):
             'score': _PUSH_TAG_STRIPPED_TEXT_SCORE_MAP.get(
                 push_tag.find(class_='push-tag').string.strip(), -255
             ),
-            'pusher_id': push_tag.find(class_='push-userid').string,
-            'text': push_tag.find(class_='push-content').string,
+            'pusher_id': push_tag.find(class_='push-userid').string or '',
+            # consider topractise's push in
+            # https://www.ptt.cc/bbs/Gossiping/M.1480355255.A.07C.html
+            'text': push_tag.find(class_='push-content').string or '',
             # won't contain year!
             'raw_mmddhhmm': (
                 push_tag.find(class_='push-ipdatetime').string.strip()
@@ -369,6 +371,13 @@ if __name__ == '__main__':
     from pprint import pprint
 
     crawl('https://www.ptt.cc/bbs/Gossiping/index.html')
+
+    import sys
+    sys.exit()
+
+    pprint(parse_article_page(read_or_request(
+        'https://www.ptt.cc/bbs/Gossiping/M.1480355255.A.07C.html'
+    )))
 
     import sys
     sys.exit()
