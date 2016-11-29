@@ -255,6 +255,7 @@ def parse_article_page(text):
     authored_dt = datetime.strptime(timestamp_text, '%a %b %d %H:%M:%S %Y')
 
     # body
+    # TODO: record the IPs?
 
     recording = False
     body_lines = []
