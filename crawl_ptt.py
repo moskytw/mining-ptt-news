@@ -165,7 +165,7 @@ def parse_index_page(text):
         # 2. <div class="title"> (本文已被刪除) [gundam0613] </div>
         #
 
-        title_a_tag = ent_tag.select('.title')[0].a
+        title_a_tag = ent_tag.find(class_='title').a
         title = title_a_tag.string
 
         title_href = title_a_tag.get('href', '')
@@ -176,11 +176,13 @@ def parse_index_page(text):
 
         # others
 
+        ent_meta_tag = ent_tag.find(class_='meta')
+
         # mmdd won't contain year!
         mmdd = '{:0>2}{:0>2}'.format(
-            *ent_tag.select('.meta .date')[0].string.split('/')
+            *ent_meta_tag.find(class_='date').string.split('/')
         )
-        author_id = ent_tag.select('.meta .author')[0].string
+        author_id = ent_meta_tag.find(class_='author').string
 
         # append
 
