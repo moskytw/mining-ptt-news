@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
 
+import logging
 from os import mkdir
 from os.path import join as path_join
 from urllib.parse import quote_plus
-import logging
 
 import requests
 from bs4 import BeautifulSoup
