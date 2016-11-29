@@ -154,7 +154,7 @@ def parse_index_page(text):
                 # loop once normally
                 break
 
-        # title & enrty_url
+        # title & article_url
 
         # cases
         #
@@ -214,11 +214,12 @@ def parse_article_page(text):
     main_content_tag = soup.find(id='main-content')
 
     # meta
-
+    #
     # <div class="article-metaline">
     #     <span class="article-meta-tag">作者</span>
     #     <span class="article-meta-value">a77774444 (我愛ˋ台灣)</span>
     # </div>
+    #
     for tag, key in zip(
         main_content_tag.select('.article-meta-tag'),
         _EXPECTED_ARTICLE_TAG_KEYS
@@ -260,7 +261,7 @@ def parse_article_page(text):
 
         raise RuntimeError('the ending text of article may be change/')
 
-    # 以後台北人都要去高雄當台勞了。\n\n--'
+    # ... 以後台北人都要去高雄當台勞了。\n\n--'
     body = '\n'.join(body_lines).rstrip('\n-')
 
     # pushes
