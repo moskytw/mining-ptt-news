@@ -121,7 +121,7 @@ def parse_index_page(text):
     ent_tags = soup.select('.r-list-container .r-ent')
     for ent_tag in ent_tags:
 
-        # push_score
+        # push_score_sum
 
         # cases
         #
@@ -129,13 +129,13 @@ def parse_index_page(text):
         # 2. <div class="nrec"></div>
         # 3. <div class="nrec"><span class="hl f0">X1</span></div>
         #
-        push_score = -65535
+        push_score_sum = -65535
         span_tag = ent_tag.find(class_='nrec').find('span')
 
         # if case 2
         if not span_tag:
 
-            push_score = 0
+            push_score_sum = 0
 
         else:
 
@@ -145,7 +145,7 @@ def parse_index_page(text):
 
                 # if case 1
                 try:
-                    push_score = int(span_text)
+                    push_score_sum = int(span_text)
                 except ValueError:
                     pass
                 else:
@@ -153,12 +153,12 @@ def parse_index_page(text):
 
                 # if case 3
                 try:
-                    push_score = int(span_text[1:])
+                    push_score_sum = int(span_text[1:])
                 except ValueError:
                     pass
                 else:
                     # TODO: is it correct?
-                    push_score = -(push_score+10)
+                    push_score_sum = -(push_score_sum+10)
                     break
 
                 # loop once normally
@@ -201,11 +201,11 @@ def parse_index_page(text):
         # append
 
         entry_ds.append({
-            'push_score' : push_score,
-            'title'      : title,
-            'article_url': article_url,
-            'raw_mmdd'   : raw_mmdd,
-            'author_id'  : author_id
+            'push_score_sum' : push_score_sum,
+            'title'          : title,
+            'article_url'    : article_url,
+            'raw_mmdd'       : raw_mmdd,
+            'author_id'      : author_id
         })
 
     return {
@@ -252,7 +252,7 @@ def parse_article_page(text):
 
     # Tue Nov 29 05:05:03 2016
     # Fri Jul  1 21:12:25 2005
-    created_dt = datetime.strptime(timestamp_text, '%a %b %d %H:%M:%S %Y')
+    authored_dt = datetime.strptime(timestamp_text, '%a %b %d %H:%M:%S %Y')
 
     # body
 
@@ -286,7 +286,7 @@ def parse_article_page(text):
             'score': _PUSH_TAG_STRIPPED_TEXT_SCORE_MAP.get(
                 push_tag.find(class_='push-tag').string.strip(), -255
             ),
-            'id': push_tag.find(class_='push-userid').string,
+            'pusher_id': push_tag.find(class_='push-userid').string,
             'text': push_tag.find(class_='push-content').string,
             # won't contain year!
             'raw_mmddhhmm': push_tag.find(class_='push-ipdatetime').string.strip()
@@ -299,7 +299,7 @@ def parse_article_page(text):
         'author_id'  : author_id,
         'author_nick': author_nick,
         'title'      : title,
-        'created_dt' : created_dt,
+        'authored_dt': authored_dt,
         'body'       : body,
         'push_ds'    : push_ds
     }
