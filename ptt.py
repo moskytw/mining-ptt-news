@@ -211,7 +211,7 @@ def parse_article_page(text):
 
     else:
 
-        raise RuntimeError('the ending text of article may be change/')
+        raise RuntimeError('the ending text of article may be change')
 
     # ... 以後台北人都要去高雄當台勞了。\n\n--'
     body = '\n'.join(body_lines).rstrip('\n-')
