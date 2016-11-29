@@ -280,13 +280,13 @@ def parse_article_page(text):
     ]
 
     return {
-        'board_name': board_name,
-        'author_id': author_id,
+        'board_name' : board_name,
+        'author_id'  : author_id,
         'author_nick': author_nick,
-        'title': title,
-        'created_dt': created_dt,
-        'body': body,
-        'push_ds': push_ds
+        'title'      : title,
+        'created_dt' : created_dt,
+        'body'       : body,
+        'push_ds'    : push_ds
     }
 
 
