@@ -345,6 +345,10 @@ def crawl(index_url):
             if not article_url:
                 continue
 
+            # skip non-news
+            if not entry_d['title'].startswith('[新聞]'):
+                continue
+
             logging.info('Crawl the article page {} ...'.format(article_url))
             try:
                 read_or_request(article_url)
