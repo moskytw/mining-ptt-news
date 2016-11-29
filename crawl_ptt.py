@@ -120,16 +120,16 @@ def parse_index_page(text):
         # 3. <div class="nrec"><span class="hl f0">X1</span></div>
         #
         push_count = -65535
-        span_tags = ent_tag.select('.nrec span')
+        span_tag = ent_tag.find(class_='nrec').find('span')
 
         # if case 2
-        if not span_tags:
+        if not span_tag:
 
             push_count = 0
 
         else:
 
-            span_text = span_tags[0].string
+            span_text = span_tag.string
 
             while 1:
 
