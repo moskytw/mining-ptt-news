@@ -110,8 +110,10 @@ def parse_index_page(text):
     if '下頁' not in next_a_tag.string:
         raise RuntimeError('the next button looks not right')
 
-    prev_url = urljoin(_ROOT, prev_a_tag.get('href', ''))
-    next_url = urljoin(_ROOT, next_a_tag.get('href', ''))
+    prev_href = prev_a_tag.get('href', '')
+    prev_url = prev_href and urljoin(_ROOT, prev_href)
+    next_href = next_a_tag.get('href', '')
+    next_url = next_href and urljoin(_ROOT, next_href)
 
     # entries
 
