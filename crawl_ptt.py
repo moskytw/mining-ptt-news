@@ -45,6 +45,7 @@ def _make_fake_browser():
 
 _SHARED_FAKE_BROWSER = _make_fake_browser()
 _CACHE_DIR_PATH = 'cache/'
+_URL_SET_SKIPPING_CACHE = {'https://www.ptt.cc/bbs/Gossiping/index.html'}
 
 
 def read_or_request(url):
@@ -55,12 +56,18 @@ def read_or_request(url):
 
     # try cache
 
-    try:
-        with open(path) as f:
-            logging.info('Hit {}'.format(url))
-            return f.read()
-    except OSError:
-        logging.info('Missed {}'.format(url))
+    if url in _URL_SET_SKIPPING_CACHE:
+
+        logging.info('Skip cache for {}'.format(url))
+
+    else:
+
+        try:
+            with open(path) as f:
+                logging.info('Hit {}'.format(url))
+                return f.read()
+        except OSError:
+            logging.info('Missed {}'.format(url))
 
     # request
 
@@ -296,7 +303,7 @@ if __name__ == '__main__':
 
     # test the index page
     pprint(parse_index_page(read_or_request(
-        'https://www.ptt.cc/bbs/Gossiping/index.html'
+        'https://www.ptt.cc/bbs/Gossiping/index20177.html'
     )))
 
     # test the article page #1
