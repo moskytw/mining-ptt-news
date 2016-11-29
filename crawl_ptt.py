@@ -179,7 +179,7 @@ def parse_index_page(text):
         ent_meta_tag = ent_tag.find(class_='meta')
 
         # mmdd won't contain year!
-        mmdd = ent_meta_tag.find(class_='date').string
+        raw_mmdd = ent_meta_tag.find(class_='date').string
         author_id = ent_meta_tag.find(class_='author').string
 
         # append
@@ -188,7 +188,7 @@ def parse_index_page(text):
             'push_count' : push_count,
             'title'      : title,
             'article_url': article_url,
-            'mmdd'       : mmdd,
+            'raw_mmdd'   : raw_mmdd,
             'author_id'  : author_id
         })
 
