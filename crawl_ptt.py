@@ -155,6 +155,7 @@ def parse_index_page(text):
                 except ValueError:
                     pass
                 else:
+                    # TODO: is it correct?
                     push_count = -(push_count+10)
                     break
 
