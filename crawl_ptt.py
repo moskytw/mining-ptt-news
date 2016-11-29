@@ -2,6 +2,7 @@
 
 
 from os import mkdir
+from os.path import join as path_join
 from urllib.parse import quote_plus
 import logging
 
@@ -49,7 +50,7 @@ def read_or_request(url):
 
     # should generate valid fname for most of the systems
     fname = quote_plus(url)
-    path = '{}{}'.format(_CACHE_DIR_PATH, fname)
+    path = path_join(_CACHE_DIR_PATH, fname)
 
     # try cache
 
