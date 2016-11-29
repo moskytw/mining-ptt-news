@@ -119,7 +119,7 @@ def parse_index_page(text):
     ent_tags = soup.select('.r-list-container .r-ent')
     for ent_tag in ent_tags:
 
-        # push_count
+        # push_score
 
         # cases
         #
@@ -127,13 +127,13 @@ def parse_index_page(text):
         # 2. <div class="nrec"></div>
         # 3. <div class="nrec"><span class="hl f0">X1</span></div>
         #
-        push_count = -65535
+        push_score = -65535
         span_tag = ent_tag.find(class_='nrec').find('span')
 
         # if case 2
         if not span_tag:
 
-            push_count = 0
+            push_score = 0
 
         else:
 
@@ -143,7 +143,7 @@ def parse_index_page(text):
 
                 # if case 1
                 try:
-                    push_count = int(span_text)
+                    push_score = int(span_text)
                 except ValueError:
                     pass
                 else:
@@ -151,12 +151,12 @@ def parse_index_page(text):
 
                 # if case 3
                 try:
-                    push_count = int(span_text[1:])
+                    push_score = int(span_text[1:])
                 except ValueError:
                     pass
                 else:
                     # TODO: is it correct?
-                    push_count = -(push_count+10)
+                    push_score = -(push_score+10)
                     break
 
                 # loop once normally
@@ -192,7 +192,7 @@ def parse_index_page(text):
         # append
 
         entry_ds.append({
-            'push_count' : push_count,
+            'push_score' : push_score,
             'title'      : title,
             'article_url': article_url,
             'raw_mmdd'   : raw_mmdd,
