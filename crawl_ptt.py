@@ -5,6 +5,7 @@ import logging
 from os import mkdir
 from os.path import join as path_join
 from urllib.parse import quote_plus
+from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
@@ -199,10 +200,110 @@ def parse_index_page(text):
     }
 
 
+_EXPECTED_ARTICLE_TAG_KEYS = ('作者', '看板', '標題', '時間')
+_PUSH_TAG_STRIPPED_TEXT_SCORE_MAP = {
+    '噓': -1,
+    '→': 0,
+    '推': 1
+}
+
+
+def parse_article_page(text):
+
+    soup = BeautifulSoup(text, 'html.parser')
+    main_content_tag = soup.find(id='main-content')
+
+    # meta
+
+    # <div class="article-metaline">
+    #     <span class="article-meta-tag">作者</span>
+    #     <span class="article-meta-value">a77774444 (我愛ˋ台灣)</span>
+    # </div>
+    for tag, key in zip(
+        main_content_tag.select('.article-meta-tag'),
+        _EXPECTED_ARTICLE_TAG_KEYS
+    ):
+        if tag.string != key:
+            raise RuntimeError('the article tags may be changed')
+
+    author_line, board_name, title, timestamp_text = (
+        tag.string
+        for tag in main_content_tag.select('.article-meta-value')
+    )
+
+    author_id, _, author_line_tail = author_line.partition(' (')
+    author_nick = author_line_tail[:-1]
+
+    # Tue Nov 29 05:05:03 2016
+    # Fri Jul  1 21:12:25 2005
+    created_dt = datetime.strptime(timestamp_text, '%a %b %d %H:%M:%S %Y')
+
+    # body
+
+    recording = False
+    body_lines = []
+    for i, line in enumerate(main_content_tag.stripped_strings):
+
+        if i == 6:
+            if line != '時間':
+                raise RuntimeError('the article structure may be changed')
+        elif i == 8:
+            recording = True
+        elif line.startswith('※ 發信站: 批踢踢實業坊'):
+            recording = False
+            break
+
+        if recording:
+            body_lines.append(line)
+
+    else:
+
+        raise RuntimeError('the ending text of article may be change/')
+
+    # 以後台北人都要去高雄當台勞了。\n\n--'
+    body = '\n'.join(body_lines).rstrip('\n-')
+
+    # pushes
+
+    push_ds = [
+        {
+            'score': _PUSH_TAG_STRIPPED_TEXT_SCORE_MAP.get(
+                push_tag.find(class_='push-tag').string.strip(), -255
+            ),
+            'id': push_tag.find(class_='push-userid').string,
+            'text': push_tag.find(class_='push-content').string,
+            # won't contain year!
+            'raw_mmddhhmm': push_tag.find(class_='push-ipdatetime').string.strip()
+        }
+        for push_tag in main_content_tag.select('.push')
+    ]
+
+    return {
+        'board_name': board_name,
+        'author_id': author_id,
+        'author_nick': author_nick,
+        'title': title,
+        'created_dt': created_dt,
+        'body': body,
+        'push_ds': push_ds
+    }
+
+
 if __name__ == '__main__':
 
     from pprint import pprint
 
-    pprint(parse_index_page(
-        read_or_request('https://www.ptt.cc/bbs/Gossiping/index.html')
-    ))
+    # test the index page
+    pprint(parse_index_page(read_or_request(
+        'https://www.ptt.cc/bbs/Gossiping/index.html'
+    )))
+
+    # test the article page #1
+    pprint(parse_article_page(read_or_request(
+        'https://www.ptt.cc/bbs/Gossiping/M.1480367106.A.A55.html'
+    )))
+
+    # test the article page #2
+    pprint(parse_article_page(read_or_request(
+        'https://www.ptt.cc/bbs/Gossiping/M.1480380251.A.9A4.html'
+    )))
