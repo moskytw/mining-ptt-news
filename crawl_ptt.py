@@ -131,6 +131,7 @@ def parse_index_page(text):
         # 2. <div class="nrec"></div>
         # 3. <div class="nrec"><span class="hl f0">X1</span></div>
         #
+
         push_score_sum = -65535
         span_tag = ent_tag.find(class_='nrec').find('span')
 
@@ -237,6 +238,7 @@ def parse_article_page(text):
     #     <span class="article-meta-value">a77774444 (我愛ˋ台灣)</span>
     # </div>
     #
+
     for tag, key in zip(
         main_content_tag.select('.article-meta-tag'),
         _EXPECTED_ARTICLE_TAG_KEYS
