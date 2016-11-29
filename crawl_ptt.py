@@ -174,13 +174,11 @@ def parse_index_page(text):
         #
 
         title_a_tag = ent_tag.find(class_='title').a
-        title = title_a_tag.string
+        if not title_a_tag:
+            continue
 
-        title_href = title_a_tag.get('href', '')
-        if title_href:
-            article_url = path_join(_ROOT, title_href)
-        else:
-            article_url = ''
+        title = title_a_tag.string
+        article_url = path_join(_ROOT, title_a_tag.get('href', ''))
 
         # others
 
