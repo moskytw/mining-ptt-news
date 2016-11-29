@@ -10,7 +10,6 @@ from random import randint
 import requests
 
 import ptt
-
 l = ptt.l
 
 
