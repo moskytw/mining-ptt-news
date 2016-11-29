@@ -290,7 +290,9 @@ def parse_article_page(text):
             'pusher_id': push_tag.find(class_='push-userid').string,
             'text': push_tag.find(class_='push-content').string,
             # won't contain year!
-            'raw_mmddhhmm': push_tag.find(class_='push-ipdatetime').string.strip()
+            'raw_mmddhhmm': (
+                push_tag.find(class_='push-ipdatetime').string.strip()
+            )
         }
         for push_tag in main_content_tag.select('.push')
     ]
