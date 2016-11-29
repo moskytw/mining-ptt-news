@@ -6,6 +6,8 @@ from os import mkdir
 from os.path import join as path_join
 from urllib.parse import quote_plus, urljoin
 from datetime import datetime
+from time import sleep
+from random import randint
 
 import requests
 from bs4 import BeautifulSoup
@@ -308,9 +310,66 @@ def parse_article_page(text):
     }
 
 
+def crawl(index_url):
+
+    count = 0
+    prev_url = index_url
+
+    while 1:
+
+        # crawl and parse the index page
+
+        logging.info('Crawl the index page {} ...'.format(prev_url))
+        try:
+            text = read_or_request(prev_url)
+        except OSError:
+            # try again
+            logging.info('Try again ...')
+            text = read_or_request(prev_url)
+
+        logging.info('Parse the index page {} ...'.format(prev_url))
+        parsed_index_d = parse_index_page(text)
+
+        prev_url = parsed_index_d['prev_url']
+
+        # crawl the article_url
+
+        for entry_d in parsed_index_d['entry_ds']:
+
+            article_url = entry_d['article_url']
+            # if deleted article
+            if not article_url:
+                continue
+
+            logging.info('Crawl the article page {} ...'.format(article_url))
+            try:
+                read_or_request(article_url)
+            except OSError:
+                # try again
+                logging.info('Try again ...')
+                try:
+                    read_or_request(article_url)
+                except OSError:
+                    # skip if still fail
+                    logging.info('Skip')
+                    continue
+
+            count += 1
+
+            logging.info('Sleep')
+            sleep(randint(0, 100)*0.01)
+
+        logging.info('Got {:,} articles so far'.format(count))
+
+
 if __name__ == '__main__':
 
     from pprint import pprint
+
+    crawl('https://www.ptt.cc/bbs/Gossiping/index.html')
+
+    import sys
+    sys.exit()
 
     # test the index page
     pprint(parse_index_page(read_or_request(
