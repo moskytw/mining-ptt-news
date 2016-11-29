@@ -183,7 +183,8 @@ def parse_index_page(text):
         title_a_tag = title_tag.a
         if title_a_tag:
             # case 1
-            title = title_a_tag.string
+            # the case in https://www.ptt.cc/bbs/Gossiping/index19183.html
+            title = title_a_tag.string or ''
             article_url = urljoin(_ROOT, title_a_tag.get('href', ''))
         else:
             # case 2: deleted article
