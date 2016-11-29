@@ -361,7 +361,7 @@ def crawl(index_url):
             count += 1
 
             logging.info('Sleep')
-            sleep(randint(0, 100)*0.01)
+            sleep(randint(0, 10)*0.001)
 
         logging.info('Got {:,} articles so far'.format(count))
 
