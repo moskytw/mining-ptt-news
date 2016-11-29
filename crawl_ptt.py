@@ -4,7 +4,7 @@
 import logging
 from os import mkdir
 from os.path import join as path_join
-from urllib.parse import quote_plus
+from urllib.parse import quote_plus, urljoin
 from datetime import datetime
 
 import requests
@@ -110,8 +110,8 @@ def parse_index_page(text):
     if '下頁' not in next_a_tag.string:
         raise RuntimeError('the next button looks not right')
 
-    prev_url = path_join(_ROOT, prev_a_tag.get('href', ''))
-    next_url = path_join(_ROOT, next_a_tag.get('href', ''))
+    prev_url = urljoin(_ROOT, prev_a_tag.get('href', ''))
+    next_url = urljoin(_ROOT, next_a_tag.get('href', ''))
 
     # entries
 
