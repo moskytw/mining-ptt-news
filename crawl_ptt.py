@@ -179,7 +179,7 @@ def parse_index_page(text):
             continue
 
         title = title_a_tag.string
-        article_url = path_join(_ROOT, title_a_tag.get('href', ''))
+        article_url = urljoin(_ROOT, title_a_tag.get('href', ''))
 
         # others
 
