@@ -83,6 +83,126 @@ def read_or_request(url):
     return text
 
 
+_ROOT = 'https://www.ptt.cc'
+
+
+def parse_index_page(text):
+
+    soup = BeautifulSoup(text, 'html.parser')
+
+    # paging
+
+    paging_a_tags = soup.select('.action-bar .btn-group-paging a')
+
+    prev_a_tag = paging_a_tags[1]
+    next_a_tag = paging_a_tags[2]
+
+    if '上頁' not in prev_a_tag.string:
+        raise RuntimeError('the prev button looks not right')
+    if '下頁' not in next_a_tag.string:
+        raise RuntimeError('the next button looks not right')
+
+    prev_url = path_join(_ROOT, prev_a_tag.get('href', ''))
+    next_url = path_join(_ROOT, next_a_tag.get('href', ''))
+
+    # entries
+
+    entry_ds = []
+    ent_tags = soup.select('.r-list-container .r-ent')
+    for ent_tag in ent_tags:
+
+        # push_count
+
+        # cases
+        #
+        # 1. <div class="nrec"><span class="hl f3">12</span></div>
+        # 2. <div class="nrec"></div>
+        # 3. <div class="nrec"><span class="hl f0">X1</span></div>
+        #
+        push_count = -65535
+        span_tags = ent_tag.select('.nrec span')
+
+        # if case 2
+        if not span_tags:
+
+            push_count = 0
+
+        else:
+
+            span_text = span_tags[0].string
+
+            while 1:
+
+                # if case 1
+                try:
+                    push_count = int(span_text)
+                except ValueError:
+                    pass
+                else:
+                    break
+
+                # if case 3
+                try:
+                    push_count = int(span_text[1:])
+                except ValueError:
+                    pass
+                else:
+                    push_count = -(push_count+10)
+                    break
+
+                # loop once normally
+                break
+
+        # title & enrty_url
+
+        # cases
+        #
+        # 1. <div class="title">
+        #        <a href="/bbs/Gossiping/M.1480367106.A.A55.html">
+        #            Re: [問卦] 有沒有高雄其實比台北進步的八卦??
+        #        </a>
+        #    </div>
+        # 2. <div class="title"> (本文已被刪除) [gundam0613] </div>
+        #
+
+        title_a_tag = ent_tag.select('.title')[0].a
+        title = title_a_tag.string
+
+        title_href = title_a_tag.get('href', '')
+        if title_href:
+            article_url = path_join(_ROOT, title_href)
+        else:
+            article_url = ''
+
+        # others
+
+        # mmdd won't contain year!
+        mmdd = '{:0>2}{:0>2}'.format(
+            *ent_tag.select('.meta .date')[0].string.split('/')
+        )
+        author_id = ent_tag.select('.meta .author')[0].string
+
+        # append
+
+        entry_ds.append({
+            'push_count' : push_count,
+            'title'      : title,
+            'article_url': article_url,
+            'mmdd'       : mmdd,
+            'author_id'  : author_id
+        })
+
+    return {
+        'prev_url': prev_url,
+        'next_url': next_url,
+        'entry_ds': entry_ds
+    }
+
+
 if __name__ == '__main__':
 
-    read_or_request('https://www.ptt.cc/bbs/Gossiping/index.html')
+    from pprint import pprint
+
+    pprint(parse_index_page(
+        read_or_request('https://www.ptt.cc/bbs/Gossiping/index.html')
+    ))
