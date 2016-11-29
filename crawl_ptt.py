@@ -292,7 +292,7 @@ def parse_article_page(text):
             'score': _PUSH_TAG_STRIPPED_TEXT_SCORE_MAP.get(
                 push_tag.find(class_='push-tag').string.strip(), -255
             ),
-            'pusher_id': push_tag.find(class_='push-userid').string or '',
+            'pusher_id': push_tag.find(class_='push-userid').string,
             # consider topractise's push in
             # https://www.ptt.cc/bbs/Gossiping/M.1480355255.A.07C.html
             'text': push_tag.find(class_='push-content').string or '',
