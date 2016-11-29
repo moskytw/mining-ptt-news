@@ -184,7 +184,11 @@ def parse_article_page(text):
 
     # Tue Nov 29 05:05:03 2016
     # Fri Jul  1 21:12:25 2005
-    authored_ts = datetime.strptime(timestamp_text, '%a %b %d %H:%M:%S %Y').timestamp()
+    authored_ts = (
+        datetime
+        .strptime(timestamp_text, '%a %b %d %H:%M:%S %Y')
+        .timestamp()
+    )
 
     # body
     # TODO: record the IPs?
