@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 
-from os import mkdir
 from os.path import join as path_join
 from urllib.parse import quote_plus
 from time import sleep
@@ -65,19 +64,10 @@ def read_or_request(url):
     resp = _SHARED_FAKE_BROWSER.get(url)
     text = resp.text
 
-    while 1:
+    with ptt_core.mkdir_n_open(path, 'w') as f:
+        f.write(text)
 
-        try:
-            with open(path, 'w') as f:
-                f.write(text)
-        except FileNotFoundError:
-            mkdir(_CACHE_DIR_PATH)
-            continue
-        else:
-            l.info('Wrote {}'.format(url))
-
-        # only loop once normally
-        break
+    l.info('Wrote {}'.format(url))
 
     return text
 
