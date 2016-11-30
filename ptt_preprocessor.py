@@ -43,18 +43,10 @@ def preprocess_to_json_file(html_path):
 
     # and transform
 
-    while 1:
+    with ptt_core.mkdir_n_open(json_path, 'w') as f:
+        json.dump(parsed_article_d, f)
 
-        try:
-            with open(json_path, 'w') as f:
-                json.dump(parsed_article_d, f)
-        except FileNotFoundError:
-            mkdir(_PREPROCESSED_DIR_PATH)
-            continue
-        else:
-            l.info('Wrote into {}'.format(json_path))
-
-        break
+    l.info('Wrote into {}'.format(json_path))
 
 
 def preprocess_all(html_dir_path):
