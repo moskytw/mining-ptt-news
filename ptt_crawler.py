@@ -66,7 +66,6 @@ def read_or_request(url):
 
     with ptt_core.mkdir_n_open(path, 'w') as f:
         f.write(text)
-
     l.info('Wrote {}'.format(url))
 
     return text

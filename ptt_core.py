@@ -42,7 +42,6 @@ def mkdir_n_open(path, *args, **arg_ds):
                 continue
 
             else:
-
                 # still failed? raise.
                 raise
 

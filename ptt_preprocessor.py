@@ -45,7 +45,6 @@ def preprocess_to_json_file(html_path):
 
     with ptt_core.mkdir_n_open(json_path, 'w') as f:
         json.dump(parsed_article_d, f)
-
     l.info('Wrote into {}'.format(json_path))
 
 
