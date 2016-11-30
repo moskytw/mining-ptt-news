@@ -2,7 +2,7 @@
 
 
 import json
-from os import mkdir, scandir
+from os import scandir
 from os.path import (
     join as path_join,
     basename as to_basename,
