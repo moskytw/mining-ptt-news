@@ -142,7 +142,7 @@ if __name__ == '__main__':
 
     from pprint import pprint
 
-    #crawl('https://www.ptt.cc/bbs/Gossiping/index.html')
+    crawl('https://www.ptt.cc/bbs/Gossiping/index.html')
 
     import sys
     sys.exit()
