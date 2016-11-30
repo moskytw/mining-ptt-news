@@ -36,6 +36,8 @@ def preprocess_to_json_file(html_path):
         try:
             parsed_article_d = ptt_core.parse_article_page(f)
         except:
+            # around 1.4% hit RuntimeError: the ending text of article may be
+            # change. we just ignore them.
             l.info('Exception and skip {}'.format(json_path))
             return
 
