@@ -191,7 +191,6 @@ def parse_article_page(text):
     )
 
     # body
-    # TODO: record the IPs?
 
     recording = False
     body_lines = []
