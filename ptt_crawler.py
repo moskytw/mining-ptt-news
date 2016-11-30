@@ -9,8 +9,8 @@ from random import randint
 
 import requests
 
-import ptt
-l = ptt.l
+import ptt_core
+l = ptt_core.l
 
 
 def _make_fake_browser():
@@ -100,7 +100,7 @@ def crawl(index_url):
             text = read_or_request(prev_url)
 
         l.info('Parse the index page {} ...'.format(prev_url))
-        parsed_index_d = ptt.parse_index_page(text)
+        parsed_index_d = ptt_core.parse_index_page(text)
 
         prev_url = parsed_index_d['prev_url']
 
@@ -147,7 +147,7 @@ if __name__ == '__main__':
     import sys
     sys.exit()
 
-    pprint(ptt.parse_article_page(read_or_request(
+    pprint(ptt_core.parse_article_page(read_or_request(
         'https://www.ptt.cc/bbs/Gossiping/M.1480355255.A.07C.html'
     )))
 
@@ -155,16 +155,16 @@ if __name__ == '__main__':
     sys.exit()
 
     # test the index page
-    pprint(ptt.parse_index_page(read_or_request(
+    pprint(ptt_core.parse_index_page(read_or_request(
         'https://www.ptt.cc/bbs/Gossiping/index20177.html'
     )))
 
     # test the article page #1
-    pprint(ptt.parse_article_page(read_or_request(
+    pprint(ptt_core.parse_article_page(read_or_request(
         'https://www.ptt.cc/bbs/Gossiping/M.1480367106.A.A55.html'
     )))
 
     # test the article page #2
-    pprint(ptt.parse_article_page(read_or_request(
+    pprint(ptt_core.parse_article_page(read_or_request(
         'https://www.ptt.cc/bbs/Gossiping/M.1480380251.A.9A4.html'
     )))

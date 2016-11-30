@@ -10,8 +10,8 @@ from os.path import (
     exists
 )
 
-import ptt
-l = ptt.l
+import ptt_core
+l = ptt_core.l
 
 
 _PREPROCESSED_DIR_PATH = 'preprocessed'
@@ -34,7 +34,7 @@ def preprocess_to_json_file(html_path):
     with open(html_path) as f:
 
         try:
-            parsed_article_d = ptt.parse_article_page(f)
+            parsed_article_d = ptt_core.parse_article_page(f)
         except:
             l.info('Exception and skip {}'.format(json_path))
             return
