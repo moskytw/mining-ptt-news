@@ -249,5 +249,8 @@ if __name__ == '__main__':
 
     from pprint import pprint
 
-    with open('cache/https%3A%2F%2Fwww.ptt.cc%2Fbbs%2FGossiping%2FM.1480162206.A.433.html') as f:
+    with open(
+        'cache/'
+        'https%3A%2F%2Fwww.ptt.cc%2Fbbs%2FGossiping%2FM.1480162206.A.433.html'
+    ) as f:
         pprint(parse_article_page(f))
