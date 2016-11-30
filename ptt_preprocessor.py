@@ -19,7 +19,7 @@ _PREPROCESSED_DIR_PATH = 'preprocessed'
 
 def preprocess_to_json_file(html_path):
 
-    l.info('Preprocessing {}'.format(html_path))
+    l.info('Preprocessing {} ...'.format(html_path))
 
     basename = to_basename(html_path)
     root, ext = splitext(basename)
