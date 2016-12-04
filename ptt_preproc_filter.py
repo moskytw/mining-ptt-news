@@ -9,7 +9,7 @@ from datetime import datetime
 
 START_DT = datetime(2016, 7, 1, 0, 0, 0)
 END_DT = datetime(2016, 12, 1, 0, 0, 0)
-DRY_RUN = False
+DRY_RUN = True
 
 
 for dir_entry in scandir('preprocessed'):
