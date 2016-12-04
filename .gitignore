@@ -1,8 +1,11 @@
 #
 *.pyc
 __pycache__
+.ipynb_checkpoints
 
 #
 /cache
 /preprocessed
 /targets
+corpus*.txt
+target*.txt
