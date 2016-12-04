@@ -57,7 +57,7 @@ def preprocess_all(html_dir_path):
         if 'index' in path:
             continue
 
-        preprocess_to_json_file(dir_entry.path)
+        preprocess_to_json_file(path)
 
 
 if __name__ == '__main__':
