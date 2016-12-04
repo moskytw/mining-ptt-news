@@ -62,11 +62,4 @@ def preprocess_all(html_dir_path):
 
 if __name__ == '__main__':
 
-    preprocess_to_json_file('cache/https%3A%2F%2Fwww.ptt.cc%2Fbbs%2FGossiping%2FM.1480423269.A.406.html')
-    preprocess_to_json_file('cache/https%3A%2F%2Fwww.ptt.cc%2Fbbs%2FGossiping%2FM.1480840343.A.A94.html')
-    preprocess_to_json_file('cache/https%3A%2F%2Fwww.ptt.cc%2Fbbs%2FGossiping%2FM.1480840497.A.677.html')
-
-    import sys
-    sys.exit()
-
     preprocess_all('cache')
