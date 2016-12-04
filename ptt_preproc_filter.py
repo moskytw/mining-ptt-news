@@ -28,6 +28,7 @@ for dir_entry in scandir('preprocessed'):
         # decide keep or remove
 
         authores_dt = datetime.fromtimestamp(d['authored_ts'])
+        # print [DATETIME]    path    KEEP|REMOVE    DRY_RUN?
         print(authores_dt, path, sep='\t', end='\t')
         if START_DT <= authores_dt < END_DT:
             print('KEEP')
