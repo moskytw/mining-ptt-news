@@ -37,4 +37,3 @@ for dir_entry in scandir('preprocessed'):
             else:
                 print('REMOVE', sep='\t')
                 remove(path)
-
