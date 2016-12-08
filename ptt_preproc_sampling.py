@@ -2,24 +2,21 @@
 
 
 from pathlib import Path
-from random import shuffle
-from shutil import copy
+from random import sample
+from os import remove
 
 
 # configs
 
 N = 10000
-SAMPLED_DIR_PATH = Path('sampled/')
 
-# mkdir if doesn't exist
+# remove unsampled
 
-if not SAMPLED_DIR_PATH.exists():
-    SAMPLED_DIR_PATH.mkdir()
+paths = [path for path in Path('preprocessed/').iterdir()]
+paths_len = len(paths)
 
-# sample and copy
+if paths_len <= N:
+    raise RuntimeError('file count {:,} <= N {:,}'.format(paths_len, N))
 
-paths = [p for p in Path('preprocessed/').iterdir()]
-shuffle(paths)
-
-for p in paths[:N]:
-    copy(str(p), str(SAMPLED_DIR_PATH / p.name))
+for path in sample(paths, paths_len-N):
+    remove(str(path))
