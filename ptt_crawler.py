@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 
-from os.path import join as path_join
+from pathlib import Path
 from urllib.parse import quote_plus
 from time import sleep
 from random import randint
@@ -34,15 +34,19 @@ def _make_fake_browser():
 
 
 _SHARED_FAKE_BROWSER = _make_fake_browser()
-_CACHE_DIR_PATH = 'cache/'
+_CACHE_DIR_PATH = Path('cache/')
 _URL_SET_SKIPPING_CACHE = {'https://www.ptt.cc/bbs/Gossiping/index.html'}
+
+
+if not _CACHE_DIR_PATH.exists():
+    _CACHE_DIR_PATH.mkdir()
 
 
 def read_or_request(url):
 
     # should generate valid fname for most of the systems
     fname = quote_plus(url)
-    path = path_join(_CACHE_DIR_PATH, fname)
+    path = _CACHE_DIR_PATH / fname
 
     # try cache
 
@@ -53,7 +57,7 @@ def read_or_request(url):
     else:
 
         try:
-            with open(path) as f:
+            with path.open() as f:
                 l.info('Hit {}'.format(url))
                 return f.read()
         except OSError:
@@ -64,7 +68,7 @@ def read_or_request(url):
     resp = _SHARED_FAKE_BROWSER.get(url)
     text = resp.text
 
-    with ptt_core.mkdir_n_open(path, 'w') as f:
+    with path.open('w') as f:
         f.write(text)
     l.info('Wrote {}'.format(url))
 
