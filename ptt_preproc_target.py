@@ -2,6 +2,7 @@
 
 
 import json
+from pathlib import Path
 from os import scandir
 from os.path import (
     join as path_join,
@@ -14,34 +15,35 @@ import ptt_core
 l = ptt_core.l
 
 
-_TARGETS_DIR_PATH = 'targets'
+_TARGETS_DIR_PATH = Path('targets')
+
+if not _TARGETS_DIR_PATH.exists():
+    _TARGETS_DIR_PATH.mkdir()
 
 
 def generate_target_from(json_path):
 
     l.info('Generate target from {} ...'.format(json_path))
 
-    basename = to_basename(json_path)
-    root, ext = splitext(basename)
-    txt_path = path_join(_TARGETS_DIR_PATH, '{}.txt'.format(root))
+    txt_path = _TARGETS_DIR_PATH / '{}.txt'.format(json_path.stem)
 
-    if exists(txt_path):
+    if txt_path.exists():
         l.info('Existed and skip {}'.format(txt_path))
         return
 
-    with open(json_path) as f:
+    with json_path.open() as f:
         d = json.load(f)
         push_score_sum = sum(push_d['score'] for push_d in d['push_ds'])
 
-    with ptt_core.mkdir_n_open(txt_path, 'w') as f:
+    with txt_path.open('w') as f:
         f.write(str(push_score_sum))
     l.info('Wrote into {}'.format(txt_path))
 
 
-def generate_all(preprocessed_dir_path):
+def generate_all(preprocessed_dir_path_str):
 
-    for dir_entry in scandir(preprocessed_dir_path):
-        generate_target_from(dir_entry.path)
+    for path in Path(preprocessed_dir_path_str).iterdir():
+        generate_target_from(path)
 
 
 if __name__ == '__main__':
