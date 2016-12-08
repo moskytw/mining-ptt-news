@@ -3,13 +3,6 @@
 
 import json
 from pathlib import Path
-from os import scandir
-from os.path import (
-    join as path_join,
-    basename as to_basename,
-    splitext,
-    exists
-)
 
 import ptt_core
 l = ptt_core.l
