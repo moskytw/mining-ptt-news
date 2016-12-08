@@ -14,7 +14,7 @@ SAMPLED_DIR_PATH = Path('sampled/')
 # mkdir if doesn't exist
 
 if not SAMPLED_DIR_PATH.exists():
-    SAMPLED_DIR_PATH.mkdir(exist_ok=True)
+    SAMPLED_DIR_PATH.mkdir()
 
 # sample and copy
 
