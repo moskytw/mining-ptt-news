@@ -3,7 +3,8 @@
 
 import json
 import sys
-from os import scandir, remove
+from pathlib import Path
+from os import remove
 from datetime import datetime
 
 
@@ -12,10 +13,9 @@ END_DT = datetime(2016, 12, 1, 0, 0, 0)
 DRY_RUN = True
 
 
-for dir_entry in scandir('preprocessed'):
+for path in Path('preprocessed/').iterdir():
 
-    path = dir_entry.path
-    with open(path) as f:
+    with path.open() as f:
 
         # read the json into d
 
@@ -37,4 +37,4 @@ for dir_entry in scandir('preprocessed'):
                 print('REMOVE', 'DRY_RUN', sep='\t')
             else:
                 print('REMOVE', sep='\t')
-                remove(path)
+                remove(str(path))
