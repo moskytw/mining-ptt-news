@@ -2,8 +2,6 @@
 
 
 import logging
-from os import mkdir
-from os.path import dirname
 from urllib.parse import urljoin
 from datetime import datetime
 
