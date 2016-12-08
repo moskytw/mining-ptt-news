@@ -49,7 +49,7 @@ def mkdir_n_open(path, *args, **arg_ds):
 # parsing
 
 
-_ROOT = 'https://www.ptt.cc'
+_ROOT_URL = 'https://www.ptt.cc'
 
 
 def parse_index_page(text):
@@ -69,9 +69,9 @@ def parse_index_page(text):
         raise RuntimeError('the next button looks not right')
 
     prev_href = prev_a_tag.get('href', '')
-    prev_url = prev_href and urljoin(_ROOT, prev_href)
+    prev_url = prev_href and urljoin(_ROOT_URL, prev_href)
     next_href = next_a_tag.get('href', '')
-    next_url = next_href and urljoin(_ROOT, next_href)
+    next_url = next_href and urljoin(_ROOT_URL, next_href)
 
     # entries
 
@@ -141,7 +141,7 @@ def parse_index_page(text):
             # case 1
             # the case in https://www.ptt.cc/bbs/Gossiping/index19183.html
             title = title_a_tag.string or ''
-            article_url = urljoin(_ROOT, title_a_tag.get('href', ''))
+            article_url = urljoin(_ROOT_URL, title_a_tag.get('href', ''))
         else:
             # case 2: deleted article
             title = title_tag.string.strip()
