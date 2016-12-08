@@ -8,7 +8,7 @@ import ptt_core
 l = ptt_core.l
 
 
-_TARGETS_DIR_PATH = Path('targets')
+_TARGETS_DIR_PATH = Path('targets/')
 
 if not _TARGETS_DIR_PATH.exists():
     _TARGETS_DIR_PATH.mkdir()
