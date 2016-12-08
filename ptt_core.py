@@ -22,33 +22,6 @@ logging.basicConfig(
 l = logging.getLogger('ptt')
 
 
-# utils
-
-
-def mkdir_n_open(path, *args, **arg_ds):
-
-    for i in range(2):
-
-        try:
-
-            return open(path, *args, **arg_ds)
-
-        except FileNotFoundError:
-
-            if i == 0:
-                # it may be due to the dir doesn't exist,
-                # make the dir and try again
-                mkdir(dirname(path))
-                continue
-
-            else:
-                # still failed? raise.
-                raise
-
-
-# parsing
-
-
 _ROOT_URL = 'https://www.ptt.cc'
 
 
@@ -277,15 +250,6 @@ def parse_article_page(text):
 if __name__ == '__main__':
 
     from pprint import pprint
-
-    # -> FileNotFoundError: [Errno 2] No such file or directory: 'tmp/tmp
-    #mkdir_n_open('tmp/tmp/a.txt', 'w')
-    # -> FileNotFoundError: [Errno 2] No such file or directory: 'tmp/a.txt'
-    #mkdir_n_open('tmp/a.txt')
-    mkdir_n_open('tmp/a.txt', 'w')  # -> OK
-
-    import sys
-    sys.exit()
 
     with open(
         'cache/'
