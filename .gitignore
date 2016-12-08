@@ -7,7 +7,6 @@ __pycache__
 /cache
 /preprocessed
 /targets
-/targets1
 /sampled
 corpus*.txt
 target*.txt
