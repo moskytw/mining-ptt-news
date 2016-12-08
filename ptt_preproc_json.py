@@ -39,14 +39,18 @@ def preprocess_to_json_file(html_path):
 
     # and transform
 
-    with json.path.open('w') as f:
+    with json_path.open('w') as f:
         json.dump(parsed_article_d, f)
     l.info('Wrote into {}'.format(json_path))
 
 
 def preprocess_all(html_dir_path_str):
 
-    for path in Path(html_dir_path_str).glob('*index*'):
+    for path in Path(html_dir_path_str).iterdir():
+
+        if 'index' in path.name:
+            continue
+
         preprocess_to_json_file(path)
 
 
