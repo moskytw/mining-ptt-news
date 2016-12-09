@@ -10,7 +10,7 @@ import zhon.hanzi
 
 def generate_corpus(preprocessed_dir_path, targets_dir_path, corpus_outputfile_path, targets_outputfile_path):
     for i, f in enumerate(preprocessed_dir_path.glob('*.json'), 1):
-        content_s = json.load(f.open())['body']
+        content_s = json.load(f.open())['title']
         print(preprocess_and_tokenizie(content_s), file=corpus_outputfile_path.open(mode='a', encoding='utf-8'))
         targets_file_path = targets_dir_path / (f.stem + '.txt')
         print(targets_file_path.read_text(), file=targets_outputfile_path.open(mode='a', encoding='utf-8'))
