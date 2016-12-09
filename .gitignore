@@ -5,10 +5,8 @@ __pycache__
 
 #
 /cache
-/preprocessed
-/targets
-/targets1
-/sampled
+/preprocessed*
+/targets*
+/sampled*
 corpus*.txt
 target*.txt
-title*.txt
