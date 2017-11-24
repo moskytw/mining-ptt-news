@@ -16,17 +16,17 @@ def _make_fake_browser():
 
     fake_browser = requests.Session()
     fake_browser.headers = {
-        'user-agent': (
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) '
-            'AppleWebKit/537.36 (KHTML, like Gecko) '
-            'Chrome/54.0.2840.98 Safari/537.36'
-        ),
-        'accept': (
-            'text/html,application/xhtml+xml,application/xml;q=0.9,'
-            'image/webp,*/*;q=0.8'
-        ),
-        'accept-encoding': 'gzip, deflate, sdch, br',
-        'accept-language': 'en-US,en;q=0.8,zh-TW;q=0.6,zh;q=0.4',
+        #'user-agent': (
+        #    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) '
+        #    'AppleWebKit/537.36 (KHTML, like Gecko) '
+        #    'Chrome/54.0.2840.98 Safari/537.36'
+        #),
+        #'accept': (
+        #    'text/html,application/xhtml+xml,application/xml;q=0.9,'
+        #    'image/webp,*/*;q=0.8'
+        #),
+        #'accept-encoding': 'gzip, deflate, sdch, br',
+        #'accept-language': 'en-US,en;q=0.8,zh-TW;q=0.6,zh;q=0.4',
         'cookie': 'over18=1',
     }
 
